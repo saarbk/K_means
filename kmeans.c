@@ -59,12 +59,12 @@ void k_means(int K, const char* dataPoints_file, const char* centeroids_file, in
         exit(1);
     }
     if(ifp_datapoints == NULL)
-   {
-      printf("Error! 2");
-      exit(1);
-   }
+    {
+        printf("Error! 2");
+        exit(1);
+    }
 
-   while((c = getc(ifp_datapoints)) != '\n')
+    while((c = getc(ifp_datapoints)) != '\n')
     {
         if(c == ',')
             d++;
