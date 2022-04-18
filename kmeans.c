@@ -16,6 +16,11 @@ int decimal(char*);
 
 int main(int argc, char **argv)
 {
+    if(argc != 4 && argc != 5)
+    {
+        printf("Invalid Input!");
+        exit(1);
+    }
     int K, max_iter;
     char* input_file, *output_file;
     (void)argc;
@@ -48,19 +53,23 @@ void k_means(int K, const char* dataPoints_file, const char* centeroids_file, in
 
     ifp_datapoints = fopen(dataPoints_file, "r");
     ifp_centeroids = fopen(centeroids_file, "w");
+    if(ifp_datapoints == NULL || ifp_centeroids == NULL)
+    {
+        printf("An Error Has Occurred");
+        exit(1);
+    }
     centeroids = (double**) calloc(K, sizeof(double*));
     clusters = (double**) calloc(K, sizeof(double*));
     cluster_size = (int*) calloc(K, sizeof(int));
 
-    printf("%d %d", max_iter, K);
     if(max_iter < 1 || K < 1)
     {
-        printf("Error! 1");
+        printf("Invalid Input!");
         exit(1);
     }
-    if(ifp_datapoints == NULL)
+    if(ifp_datapoints == NULL || ifp_centeroids == NULL || centeroids == NULL || clusters == NULL || cluster_size == NULL)
     {
-        printf("Error! 2");
+        printf("An Error Has Occurred");
         exit(1);
     }
 
@@ -129,8 +138,11 @@ void k_means(int K, const char* dataPoints_file, const char* centeroids_file, in
         fprintf(ifp_centeroids, "%c", '\n');
     }
 
-    fclose(ifp_datapoints);
-    fclose(ifp_centeroids);
+    if(fclose(ifp_datapoints) != 0 || fclose(ifp_centeroids) != 0)
+        {
+            printf("An Error Has Occurred");
+            exit(1);
+        }
     free(datapoints);
     free(clusters);
     free(centeroids);
@@ -166,7 +178,6 @@ void opt(int K, double** dataPoints, double** centeroids, double** clusters, int
         }
         reps++;
     }
-    printf(" %d", reps);
     free(new_centeroid);
 }
 double* update_centeroid(double *cluster, int cluster_size, int d)
