@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 
 void k_means(int K, const char* dataPoints_file, const char* centeroids_file, int max_iter)
 {
-    int i = 0, j = 0, d = 1, N = 1, offset = 0;
+    int i = 0, j = 0, d = 1, N = 0, offset = 0;
     char c;
     double num;
     FILE *ifp_datapoints = NULL;
@@ -123,7 +123,8 @@ void k_means(int K, const char* dataPoints_file, const char* centeroids_file, in
         for(j = 0; j < d; j++)
         {
             fprintf(ifp_centeroids, "%.4f", centeroids[i][j]);
-            fprintf(ifp_centeroids, "%s", ", ");
+            if(j < d-1)
+                fprintf(ifp_centeroids, "%s", ",");
         }
         fprintf(ifp_centeroids, "%c", '\n');
     }
@@ -153,7 +154,9 @@ void opt(int K, double** dataPoints, double** centeroids, double** clusters, int
         }
         for (i = 0; i < K; i++)
         {
-            new_centeroid = update_centeroid(clusters[i], clusters_size[i], d);
+            if(clusters_size[i] > 0)
+                new_centeroid = update_centeroid(clusters[i], clusters_size[i], d);
+
             if(calculate_dist(new_centeroid, centeroids[i], d) >= EPSILON)
                 done = 0;
             for(j = 0; j < d; j++)
@@ -163,6 +166,7 @@ void opt(int K, double** dataPoints, double** centeroids, double** clusters, int
         }
         reps++;
     }
+    printf(" %d", reps);
     free(new_centeroid);
 }
 double* update_centeroid(double *cluster, int cluster_size, int d)
@@ -170,7 +174,7 @@ double* update_centeroid(double *cluster, int cluster_size, int d)
     int i;
     for (i = 0; i < d; i++)
     {
-        cluster[i] = cluster[i] / cluster_size;
+        cluster[i] = (double)(cluster[i] / cluster_size);
     }
     return cluster;
 }
@@ -198,7 +202,7 @@ double calculate_dist(double* point1, double* point2, int d)
     sum = 0.0;
     for(i = 0; i < d; i++)
     {
-        sum += pow(point1[i] - point2[i] , 2);
+        sum += pow((point1[i] - point2[i]) , 2);
     }
     sum = pow(sum, 0.5);
     return sum;
