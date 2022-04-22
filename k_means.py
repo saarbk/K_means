@@ -6,9 +6,6 @@ data, centroids, eror_rate = ([], [], False)
 
 sys_input = sys.argv
 
-""" Optional test for sys input  """
-
-
 def k_means():
     """
     Main function Implement k-means clustering algorithm
