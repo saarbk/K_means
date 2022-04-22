@@ -9,9 +9,6 @@ sys_input = sys.argv
 """ Optional test for sys input  """
 
 
-# sys_input = ['k_means.py', '7', '200', 'input_2.txt', 'output.txt']
-
-
 def k_means():
     """
     Main function Implement k-means clustering algorithm
@@ -47,24 +44,32 @@ def distance(list1, list2):
 
 
 """ Set user inputs """
-if len(sys_input) == 5:
-    K, input_file, output_file, max_iter = (int(sys_input[1]), sys_input[3], sys_input[4], int(sys_input[2]))
-else:
-    if len(sys.argv) == 4:
-        K, input_file, output_file = (int(sys_input[1]), sys_input[2], sys_input[3])
+try:
+    if len(sys_input) == 5:
+        K, input_file, output_file, max_iter = (int(sys_input[1]), sys_input[3], sys_input[4], int(sys_input[2]))
     else:
-        breakpoint("illegal args insert")
+        if len(sys.argv) == 4:
+            K, input_file, output_file = (int(sys_input[1]), sys_input[2], sys_input[3])
+        else:
+            breakpoint("Invalid Input!")
 
-    """ Read data from src """
-for line in open(input_file):
-    point = [float(i) for i in line.strip('\n').split(',')]
-    data.append(point)
+        """ Read data from src """
+    for line in open(input_file):
+        point = [float(i) for i in line.strip('\n').split(',')]
+        data.append(point)
 
-""" Create K-clusters from k first elements. """
-centroids = data[:K]
+except ValueError:
+    raise ValueError("Invalid Input!") from None
 
-""" K-means run """
-result = k_means()
+try:
+    """ Create K-clusters from k first elements. """
+    centroids = data[:K]
+
+    """ K-means run """
+    result = k_means()
+
+except ValueError:
+    raise ValueError(" An Error Has Occurred. ") from None
 
 """ Write the centroids to Data file. """
 W = open(output_file, 'w')
