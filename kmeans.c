@@ -16,14 +16,13 @@ int decimal(char*);
 
 int main(int argc, char **argv)
 {
+    int K, max_iter;
+    char* input_file, *output_file;
     if(argc != 4 && argc != 5)
     {
         printf("Invalid Input!");
         exit(1);
     }
-    int K, max_iter;
-    char* input_file, *output_file;
-    (void)argc;
     max_iter = 200;
     K = atoi(argv[1]);
     if(decimal(argv[2]) == 1)
@@ -139,10 +138,10 @@ void k_means(int K, const char* dataPoints_file, const char* centeroids_file, in
     }
 
     if(fclose(ifp_datapoints) != 0 || fclose(ifp_centeroids) != 0)
-        {
-            printf("An Error Has Occurred");
-            exit(1);
-        }
+    {
+        printf("An Error Has Occurred");
+        exit(1);
+    }
     free(datapoints);
     free(clusters);
     free(centeroids);
